@@ -1,0 +1,7 @@
+#! /bin/bash
+tooldir=`dirname $0`
+toolname=`basename $0`
+tempfile="/tmp/$(whoami)-$toolname-$1"
+
+wget -q -O $tempfile "http://cactus.nci.nih.gov/chemical/structure/$1/iupac_name"
+cat $tempfile | sed '2,10000000 d'

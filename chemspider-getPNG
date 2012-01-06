@@ -1,0 +1,16 @@
+#! /bin/bash
+tooldir=`dirname $0`
+toolname=`basename $0`
+tempfile="/tmp/$(whoami)-$toolname-$1"
+token=`cat $tooldir/chemspider-token 2>/dev/null`
+if [ -z "$token" ] ; then
+    echo "Please add your ChemSpider token to $tooldir/chemspider-token!"
+fi
+
+if [ -n "$2" ] ; then
+    file=$2
+else
+    file=$1
+fi
+wget -q -O $tempfile "http://www.chemspider.com/Search.asmx/GetCompoundThumbnail?token=$token&id=$1"
+cat $tempfile | sed -e '1 d' -e '2 s/<.*>\(.*\)<\/.*>/\1/' | base64 -d > $file.png

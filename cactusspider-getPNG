@@ -1,0 +1,9 @@
+#! /bin/bash
+tooldir=`dirname $0`
+if [ -n "$2" ] ; then
+    out=$2
+else
+    out=$1
+fi
+
+$tooldir/chemspider-getPNG $($tooldir/cactus-getChemSpiderId $1) $out

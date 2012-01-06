@@ -1,0 +1,11 @@
+#! /bin/bash
+tooldir=`dirname $0`
+toolname=`basename $0`
+tempfile="/tmp/$(whoami)-$toolname-$1"
+token=`cat $tooldir/chemspider-token 2>/dev/null`
+if [ -z "$token" ] ; then
+    echo "Please add your ChemSpider token to $tooldir/chemspider-token!"
+fi
+
+wget -q -O $tempfile "http://www.chemspider.com/Search.asmx/GetCompoundInfo?token=$token&csid=$1"
+cat $tempfile | sed -e '1,3 d' -e '5,100 d' -e '4 s/.*<.*>\(.*\)<\/.*>/\1/'
